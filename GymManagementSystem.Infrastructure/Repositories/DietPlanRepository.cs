@@ -1,6 +1,7 @@
 ﻿using GymManagementSystem.Domain.Entities;
 using GymManagementSystem.Domain.Interfaces;
 using GymManagementSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,30 +17,37 @@ namespace GymManagementSystem.Infrastructure.Repositories
         {
             _context = context;
         }
-
-        public Task AddAsync(DietPlan dietPlan)
+        public async Task<List<DietPlan>> GetAllAsync()
         {
+            return await _context.DietPlans.ToListAsync();
+        }
+        public async Task<DietPlan> GetByIdAsync(int id)
+        {
+            return await _context.DietPlans.FindAsync(id);
+        }
+
+        public async Task AddAsync(DietPlan dietPlan)
+        {
+          await _context.DietPlans.AddAsync(dietPlan);
+            await _context.SaveChangesAsync();
             
         }
-
-        public Task DeleteAsync(int id)
+        public async Task UpdateAsync(DietPlan dietPlan)
         {
-           
+           _context.DietPlans.Update(dietPlan);
+            await _context.SaveChangesAsync();
+        }
+        public async Task DeleteAsync(int id)
+        {
+            var dietplan = await _context.DietPlans.FindAsync(id);
+            if (dietplan != null)
+            {
+                _context.DietPlans.Remove(dietplan);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public Task<List<DietPlan>> GetAllAsync()
-        {
-            
-        }
-
-        public Task<DietPlan> GetByIdAsyncAsync(int id)
-        {
-            
-        }
-
-        public Task UpdateAsync(DietPlan dietPlan)
-        {
-           
-        }
+       
     }
 }
+

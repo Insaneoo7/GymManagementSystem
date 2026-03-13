@@ -10,7 +10,7 @@ namespace GymManagementSystem.Domain.Interfaces
     public interface IDietPlanRepository
     {
         Task<List<DietPlan>> GetAllAsync();
-        Task<DietPlan> GetByIdAsyncAsync(int id);
+        Task<DietPlan> GetByIdAsync(int id);
         Task AddAsync (DietPlan dietPlan);
         Task UpdateAsync (DietPlan dietPlan);
         Task DeleteAsync (int id);

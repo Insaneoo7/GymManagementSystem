@@ -25,26 +25,30 @@ namespace GymManagementSystem.Infrastructure.Repositories
         {
             return await _context.Members.ToListAsync();
         }
+        public async Task<Member> GetByIdAsync(int id)
+        {
+            return await _context.Members.FindAsync(id);
+        }
 
         public async Task AddAsync(Member member)
         {
             await _context.Members.AddAsync(member);
             await _context.SaveChangesAsync();
         }
-
-        public Task<Member> GetByIdAsync(int id)
+        public async Task UpdateAsync(Member member)
         {
-            throw new NotImplementedException();
+           _context.Members.Update(member);
+            await _context.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(Member member)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
+            var member= await _context.Members.FindAsync(id);
+            if (member != null)
+            {
+                _context.Members.Remove(member);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
